@@ -19,11 +19,14 @@ class Printer():
     def __init__(self):
         self.print_type = input('What format would you like? ( coloured or grayscale )')
         self.pages = input('Enter Number of Pages to Print! ')
-        self.coin_type = input('Enter Cointype', 'Hey: ')
-        self.coins = input('Number of Coins: ')
+        # self.coin_type = input('Enter Cointype', 'Hey: ')
+        # self.coins = input('Number of Coins: ')
+        self.check_resources()
+
 
     def check_resources(self):
-        pass
+        materials = print_format[self.print_type]['materials']
+        print(self.pages)
 
     def process_price(self, pages):
         self.total = pages * Printer.prices[self.type]
@@ -37,10 +40,14 @@ class Printer():
         else:
             Printer.resource['ink'] -= (print_format[self.print_type]['materials']['ink'] * self.pages)
             Printer.resource['paper'] -= self.pages
-            Printer.resource['profit'] += user_coins
+            Printer.resource['profit'] += self.total
+            if user_coins > self.total:
+                print('This is your change:', user_coins - self.total)
             return True
-
-
+    
+    def thank_you(self):
+        print("Here's your project")
+        print("Thank you for using our services. We hope to see you soon")
 
 
     @classmethod
@@ -54,19 +61,10 @@ class Printer():
         print(f"Ink: {resources['ink']}ml")
         print(f"Profit: ${resources['profit']}")
 
+    @staticmethod
+    def handle_processes():
+        print('hello')
 
-class GreyPrinter(Printer):
-    pass
-
-
-class ColoredPrinter(Printer):
-    pass
-
-# resources['ink'] = 300
-
-# job1 = GreyPrinter()
-# job2 = ColoredPrinter()
-# job1.turn_off()
 
 
 if __name__ == '__main__':
