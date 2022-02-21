@@ -14,24 +14,33 @@ class Printer():
         'Dime': 0.10,
         'Quarter': 0.25
     }
-    prices = {'coloured': 35, 'grayscale': 25}
 
     def __init__(self):
-        self.print_type = input('What format would you like? ( coloured or grayscale )')
-        self.pages = input('Enter Number of Pages to Print! ')
+        print(logo)
+        self.print_type = input('What format would you like? ( coloured or greyscale ): ')
+        self.pages = int(input('Enter Number of Pages to Print! '))
         # self.coin_type = input('Enter Cointype', 'Hey: ')
         # self.coins = input('Number of Coins: ')
-        self.check_resources()
+        self.process_price()
 
 
     def check_resources(self):
         materials = print_format[self.print_type]['materials']
-        print(self.pages)
+        ink = self.pages * materials['ink']
+        if self.pages > Printer.resource['paper']:
+            print("Sorry, there's not enough paper")
+        elif ink > Printer.resource['ink']:
+            print("Sorry, there is not enough ink")
+        else:
+            return True
 
-    def process_price(self, pages):
-        self.total = pages * Printer.prices[self.type]
-        user_coins = input(f'Your Transaction would cost ${self.total}. Enter Amount you would pay')
-        return user_coins
+    def process_price(self):
+        if self.check_resources():
+            price = print_format[self.print_type]['price']
+            self.total = self.pages * price
+            user_coins = input(f'Your Transaction would cost ${self.total}. Enter Amount you would pay: ')
+            print(user_coins)
+            return user_coins
 
     def check_transactions(self):
         user_coins = self.process_price(self.pages)
@@ -68,4 +77,4 @@ class Printer():
 
 
 if __name__ == '__main__':
-    Printer.process_price('', 12)
+    job = Printer()
