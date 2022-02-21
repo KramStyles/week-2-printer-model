@@ -1,5 +1,5 @@
 # The entry point of your application
-from data.data import FORMAT as format, resources
+from data.data import FORMAT as print_format, resources
 from assets.art import logo
 
 
@@ -17,9 +17,9 @@ class Printer():
     prices = {'coloured': 35, 'grayscale': 25}
 
     def __init__(self):
-        self.type = input('What format would you like? ( coloured or grayscale )')
+        self.print_type = input('What format would you like? ( coloured or grayscale )')
         self.pages = input('Enter Number of Pages to Print! ')
-        self.type = input('Enter Cointype', 'Hey: ')
+        self.coin_type = input('Enter Cointype', 'Hey: ')
         self.coins = input('Number of Coins: ')
 
     def check_resources(self):
@@ -30,10 +30,19 @@ class Printer():
         user_coins = input(f'Your Transaction would cost ${self.total}. Enter Amount you would pay')
         return user_coins
 
-    def check_transactions(self, ):
+    def check_transactions(self):
         user_coins = self.process_price(self.pages)
         if self.total > user_coins:
-            
+            return "Sorry that’s not enough coins. Coins refunded"
+        else:
+            Printer.resource['ink'] -= (print_format[self.print_type]['materials']['ink'] * self.pages)
+            Printer.resource['paper'] -= self.pages
+            Printer.resource['profit'] += user_coins
+            return True
+
+
+
+
     @classmethod
     def turn_off(self):
         print("Bye!")
