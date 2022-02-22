@@ -2,4 +2,5 @@
 from company import Printer
 
 if __name__ == '__main__':
-    job2 = Printer()
+    job = Printer()
+    # job1 = Printer()d

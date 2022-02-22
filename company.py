@@ -1,6 +1,8 @@
 from data.data import FORMAT as print_format, resources
 from assets.art import logo
 
+print(logo)
+
 
 class Printer:
     # off turns off the system
@@ -16,11 +18,9 @@ class Printer:
 
         self.turn_on()
 
-
     def turn_on(self):
-        print(logo)
-        print("What format would you like? ( coloured or greyscale ). ")
-        while self.print_type is None:
+        print("\n\nWhat format would you like? ( coloured or greyscale ). ")
+        while self.print_type is None or str(self.print_type).isdigit():
             self.print_type = self.verify_input(input("Type g for Greyscale and c for Coloured: "))
         while self.pages is None:
             self.pages = self.verify_input(input('Enter Number of Pages to Print! '))
@@ -40,8 +40,10 @@ class Printer:
         ink = self.pages * self.materials['ink']
         if self.pages > Printer.resource['paper']:
             print("Sorry, there's not enough paper")
+            # self.turn_off()
         elif ink > Printer.resource['ink']:
             print("Sorry, there is not enough ink")
+            # self.turn_off()
         else:
             return True
 
@@ -59,8 +61,8 @@ class Printer:
             return user_coins
 
     def run_transactions(self):
-        if self.process_price:
-            user_coins = self.process_price()
+        user_coins = self.process_price()
+        if user_coins:
             if self.total > user_coins:
                 print("Sorry that’s not enough coins. Coins refunded")
                 # Todo: Fix paper not enough error
