@@ -11,18 +11,30 @@ class Printer:
     currency = {'Pennies': 0.01, 'Nickels': 0.05, 'Dimes': 0.10, 'Quarters': 0.25}
 
     def __init__(self):
+        self.print_type = None
+        self.pages = None
+        self.response = 0
+
+        self.turn_on()
+
+
+    def turn_on(self):
         print(logo)
         print("What format would you like? ( coloured or greyscale ). ")
-        self.print_type = input("Type g for Greyscale and c for Coloured: ")
-        self.pages = int(input('Enter Number of Pages to Print! '))
-        self.response = 0
+        while self.print_type is None:
+            self.print_type = self.verify_input(input("Type g for Greyscale and c for Coloured: "))
+        while self.pages is None:
+            self.pages = self.verify_input(input('Enter Number of Pages to Print! '))
         self.run_transactions()
 
     def verify_input(self, value):
         if value.lower() == 'off': self.turn_off()
+        elif value.lower() == 'g': return 'greyscale'
+        elif value.lower() == 'c': return 'coloured'
+        elif value.isdigit(): return int(value)
         elif value.lower() == 'report': self.report()
         else: print("Unknown Input")
-        return True
+        return None
 
     def check_resources(self):
         self.materials = print_format[self.print_type]['materials']
