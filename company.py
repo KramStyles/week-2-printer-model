@@ -52,9 +52,10 @@ class Printer:
             print(f'Your Transaction would cost ${self.total}. ')
             user_coins = 0
             for currency in Printer.currency:
-                money = input(f"Enter amount you want to pay in {currency}: ")
-                # Todo: Fix a while loop for each time an invalid input is used
-                user_coins += (int(money) * Printer.currency[currency]) if money.isdigit() else self.verify_input(money)
+                money = None
+                while money is None:
+                    money = self.verify_input(input(f"Enter amount you want to pay in {currency}: "))
+                user_coins += money * Printer.currency[currency]
             return user_coins
 
     def run_transactions(self):
@@ -62,6 +63,7 @@ class Printer:
             user_coins = self.process_price()
             if self.total > user_coins:
                 print("Sorry that’s not enough coins. Coins refunded")
+                # Todo: Fix paper not enough error
             else:
                 Printer.resource['ink'] -= (self.materials['ink'] * self.pages)
                 Printer.resource['paper'] -= self.pages
