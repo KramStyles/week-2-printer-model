@@ -12,18 +12,17 @@ class Printer:
 
     def __init__(self):
         print(logo)
-        self.print_type = input('What format would you like? ( coloured or greyscale ): ')
+        print("What format would you like? ( coloured or greyscale ). ")
+        self.print_type = input("Type g for Greyscale and c for Coloured: ")
         self.pages = int(input('Enter Number of Pages to Print! '))
+        self.response = 0
         self.run_transactions()
 
     def verify_input(self, value):
-        if value.lower() == 'off':
-            self.turn_off()
-        elif value.lower() == 'report':
-            self.report()
-        else:
-            print("Unknown Input. Try again")
-            return True
+        if value.lower() == 'off': self.turn_off()
+        elif value.lower() == 'report': self.report()
+        else: print("Unknown Input")
+        return True
 
     def check_resources(self):
         self.materials = print_format[self.print_type]['materials']
@@ -43,7 +42,7 @@ class Printer:
             user_coins = 0
             for currency in Printer.currency:
                 money = input(f"Enter amount you want to pay in {currency}: ")
-                user_coins += int(money) * Printer.currency[currency] if money.isdigit() else self.verify_input(money)
+                user_coins += (int(money) * Printer.currency[currency]) if money.isdigit() else self.verify_input(money)
             return user_coins
 
     def run_transactions(self):
@@ -62,7 +61,7 @@ class Printer:
     @classmethod
     def turn_off(cls):
         print("Bye!")
-        SystemExit()
+        exit()
 
     @classmethod
     def report(cls):
