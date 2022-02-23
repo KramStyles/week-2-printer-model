@@ -5,8 +5,11 @@ print(logo)
 
 
 class Printer:
-    # off turns off the system
-    # report prints out current system status
+    """
+    The Class Model of a Printing machine that is able to print both in greyscale and coloured format depending on the
+    user’s choice.
+    output: str - Message giving replies to the user depending on choices made
+    """
 
     resource = resources
     currency = {'Pennies': 0.01, 'Nickels': 0.05, 'Dimes': 0.10, 'Quarters': 0.25}
@@ -22,17 +25,18 @@ class Printer:
         print("\n\nWhat format would you like? ( coloured or greyscale ). ")
         while self.print_type is None or str(self.print_type).isdigit():
             self.print_type = self.verify_input(input("Type g for Greyscale and c for Coloured: "))
-        while self.pages is None:
+        while self.pages is None or not str(self.pages).isdigit():
             self.pages = self.verify_input(input('Enter Number of Pages to Print! '))
         self.run_transactions()
 
     def verify_input(self, value):
+        value = value.strip()
         if value.lower() == 'off': self.turn_off()
         elif value.lower() == 'g': return 'greyscale'
         elif value.lower() == 'c': return 'coloured'
         elif value.isdigit(): return int(value)
         elif value.lower() == 'report': self.report()
-        else: print("Unknown Input")
+        else: print("Unknown Input. Please try again!")
         return None
 
     def check_resources(self):
@@ -40,10 +44,8 @@ class Printer:
         ink = self.pages * self.materials['ink']
         if self.pages > Printer.resource['paper']:
             print("Sorry, there's not enough paper")
-            # self.turn_off()
         elif ink > Printer.resource['ink']:
             print("Sorry, there is not enough ink")
-            # self.turn_off()
         else:
             return True
 
@@ -55,7 +57,7 @@ class Printer:
             user_coins = 0
             for currency in Printer.currency:
                 money = None
-                while money is None:
+                while money is None or not str(money).isdigit():
                     money = self.verify_input(input(f"Enter amount you want to pay in {currency}: "))
                 user_coins += money * Printer.currency[currency]
             return user_coins
@@ -65,13 +67,12 @@ class Printer:
         if user_coins:
             if self.total > user_coins:
                 print("Sorry that’s not enough coins. Coins refunded")
-                # Todo: Fix paper not enough error
             else:
                 Printer.resource['ink'] -= (self.materials['ink'] * self.pages)
                 Printer.resource['paper'] -= self.pages
                 Printer.resource['profit'] += self.total
                 if user_coins > self.total:
-                    print('This is your change:', user_coins - self.total)
+                    print(f'Here is ${user_coins - self.total} in change.')
                 self.thank_you()
 
     @classmethod
@@ -88,4 +89,4 @@ class Printer:
     @staticmethod
     def thank_you():
         print("Here's your project")
-        print("Thank you for using our services. We hope to see you soon")
+        print("Thank you for using our services. We hope to see you soon.")
